@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+set -E
+
+cd /home/zeromq
+for repo in "gsl" "libzmq" "czmq" "malamute" "zproject" "zproto" "zyre"
+do
+    [[ -d ${repo} ]] || su zeromq -c "git clone -o upstream \"https://github.com/zeromq/${repo}\""
+
+    pushd "${repo}"
+
+    [[ -x autogen.sh ]] && su zeromq -c "./autogen.sh"
+    [[ -x configure ]] && su zeromq -c "$(rpm -E %{configure})"
+
+    if [[ "${repo}" == "gsl" ]]; then
+        su zeromq -c "make -j1 -C src/"
+    else
+        su zeromq -c "make -j$(nproc)"
+    fi
+
+    make install
+
+    popd
+done
