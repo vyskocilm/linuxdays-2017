@@ -26,3 +26,10 @@ I: 18-07-23 13:20:44 Hello from zsys(4.2.0)@e38b6d1331e3
 $ ./zh
 I: 18-07-23 15:20:51 Hello from zsys(4.2.0)@linux-33zu
 ```
+
+## Rebuild
+
+```
+cd linuxdays-2017
+docker build zimg
+```
